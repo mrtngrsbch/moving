@@ -631,7 +631,7 @@ def create_scores_chart(results: AnalysisResults, is_advanced: bool = False, con
             )
         
         fig.update_layout(showlegend=False, height=400)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="scores_main_chart")
     
     with col2:
         if is_advanced and confidence_score > 0:
@@ -659,7 +659,7 @@ def create_scores_chart(results: AnalysisResults, is_advanced: bool = False, con
             ))
             
             fig_confidence.update_layout(height=300)
-            st.plotly_chart(fig_confidence, use_container_width=True)
+            st.plotly_chart(fig_confidence, use_container_width=True, key="confidence_gauge_chart")
         else:
             st.info("📊 Métricas de confianza no disponibles para análisis básico")
 
@@ -801,7 +801,7 @@ def display_score_methodology(results: AnalysisResults, is_advanced: bool, confi
         }
         
         df_interpretation = pd.DataFrame(interpretation_data)
-        st.dataframe(df_interpretation, use_container_width=True, hide_index=True)
+        st.dataframe(df_interpretation, use_container_width=True, hide_index=True, key="score_interpretation_table")
         
         # Nota importante
         st.markdown("---")
@@ -921,7 +921,7 @@ def display_screening_report(results: AnalysisResults):
             title="Niveles de Confianza del Análisis Automático"
         )
         fig.update_layout(height=300)
-        st.plotly_chart(fig, use_container_width=True)
+        st.plotly_chart(fig, use_container_width=True, key="confidence_levels_chart")
     
     # Banderas de riesgo
     if screening.risk_flags:
@@ -977,7 +977,8 @@ def display_screening_report(results: AnalysisResults):
         st.dataframe(
             filtered_df,
             use_container_width=True,
-            hide_index=True
+            hide_index=True,
+            key="validation_checklist_table"
         )
         
         # Resumen por prioridad
@@ -989,14 +990,14 @@ def display_screening_report(results: AnalysisResults):
         
         col1, col2 = st.columns(2)
         with col1:
-            st.dataframe(priority_summary)
+            st.dataframe(priority_summary, key="priority_summary_table")
         with col2:
             fig = px.pie(
                 values=priority_summary['Cantidad'],
                 names=priority_summary.index,
                 title="Distribución de Items por Prioridad"
             )
-            st.plotly_chart(fig, use_container_width=True)
+            st.plotly_chart(fig, use_container_width=True, key="priority_distribution_pie_chart")
 
 def display_recommendations(results: AnalysisResults):
     """Mostrar recomendaciones automáticas"""
